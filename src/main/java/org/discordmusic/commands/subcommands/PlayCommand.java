@@ -55,6 +55,6 @@ public class PlayCommand extends DCommand {
 		}
 
 		PlayerManager.getInstance()
-			.loadAndPlay(channel, url);
+			.loadAndPlay(channel, url, member, event);
 	}
 }

@@ -12,13 +12,15 @@ import net.dv8tion.jda.api.utils.Compression;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.discordmusic.commands.CommandHandler;
+import org.discordmusic.events.ReadyEvent;
 
 import javax.security.auth.login.LoginException;
+import java.util.EventListener;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class Main {
+public class Main implements EventListener {
 	public static void main(String[] args) throws LoginException {
 
 		Dotenv dotenv = Dotenv.load();
@@ -31,6 +33,7 @@ public class Main {
 			.setBulkDeleteSplittingEnabled(false)
 			.setCompression(Compression.NONE)
 			.setActivity(Activity.listening("Music"))
+			.addEventListeners(new ReadyEvent())
 			.addEventListeners(new CommandHandler())
 			.build();
 
@@ -60,4 +63,5 @@ public class Main {
 			jda.getPresence().setStatus((statusbot[currentIndex[0]]));
 		}, 0, 5, TimeUnit.SECONDS);
 	}
+
 }

@@ -2,6 +2,7 @@ package org.discordmusic.util;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,6 +21,24 @@ public class Utils {
 		}
 
 		return id;
+	}
+
+	public static String generateRandomColor() {
+		Random random = new Random();
+		int nextInt = random.nextInt(0xffffff + 1);
+		return String.format("#%06x", nextInt);
+	}
+
+	public static String getThumbnailUrl(String youtubeId) {
+		return "http://img.youtube.com/vi/" + youtubeId + "/maxresdefault.jpg";
+	}
+
+	public static String formatMillisecondsToMinutes(Long milliseconds) {
+		long minutes = (milliseconds / 1000) / 60;
+		long seconds = (milliseconds / 1000) % 60;
+
+		return minutes + " minutos e "
+			+ seconds + " segundos.";
 	}
 
 	public static boolean isURL(String url) {

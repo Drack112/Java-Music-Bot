@@ -7,9 +7,14 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import org.discordmusic.util.Utils;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +22,7 @@ public class PlayerManager {
 	private static PlayerManager INSTANCE;
 	private final Map<Long, GuildMusicManager> musicManagers;
 	private final AudioPlayerManager audioPlayerManager;
+
 
 	public PlayerManager() {
 		this.musicManagers = new HashMap<>();
@@ -36,7 +42,7 @@ public class PlayerManager {
 		});
 	}
 
-	public void loadAndPlay(TextChannel channel, String trackURL) {
+	public void loadAndPlay(TextChannel channel, String trackURL, Member member, SlashCommandEvent event) {
 		final GuildMusicManager musicManager = this.getMusicManager(channel.getGuild());
 
 		musicManager.audioPlayer.setPaused(false);
@@ -46,12 +52,14 @@ public class PlayerManager {
 			public void trackLoaded(AudioTrack audioTrack) {
 				musicManager.scheduler.queue(audioTrack);
 
-				channel.sendMessage("Musíca adicionada na fila: `")
-					.append(audioTrack.getInfo().title)
-					.append("`por`")
-					.append(audioTrack.getInfo().author)
-					.append("`")
-					.queue();
+				channel.sendMessageEmbeds(new EmbedBuilder().setTitle("Música adicionada na fila!")
+					.setColor(Color.decode(Utils.generateRandomColor()))
+					.setAuthor(member.getUser().getName(), null, member.getUser().getAvatarUrl())
+					.setImage(Utils.getThumbnailUrl(trackURL))
+					.setFooter(event.getJDA().getSelfUser().getName() + " \uD83D\uDC0D")
+					.addField("Duração: ", Utils.formatMillisecondsToMinutes(audioTrack.getDuration()), true)
+					.addField("Título: ", audioTrack.getInfo().title, false)
+					.addField("Autor: ", audioTrack.getInfo().author, false).build()).queue();
 
 			}
 
@@ -64,12 +72,14 @@ public class PlayerManager {
 					return;
 				}
 
-				channel.sendMessage("Musíca adicionada na fila: `")
-					.append(audioTrack.getInfo().author)
-					.append("`por`")
-					.append(audioTrack.getInfo().title)
-					.append("`")
-					.queue();
+				channel.sendMessageEmbeds(new EmbedBuilder().setTitle("Música adicionada na fila!")
+					.setColor(Color.decode(Utils.generateRandomColor()))
+					.setAuthor(member.getUser().getName(), null, member.getUser().getAvatarUrl())
+					.setImage(Utils.getThumbnailUrl(trackURL))
+					.setFooter(event.getJDA().getSelfUser().getName(), event.getJDA().getSelfUser().getAvatarUrl())
+					.addField("Duração: ", Utils.formatMillisecondsToMinutes(audioTrack.getDuration()), true)
+					.addField("Título: ", audioTrack.getInfo().title, false)
+					.addField("Autor: ", audioTrack.getInfo().author, false).build()).queue();
 
 				musicManager.scheduler.queue(audioTrack);
 			}
