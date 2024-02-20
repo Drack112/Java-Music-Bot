@@ -32,7 +32,7 @@ public class StopCommand extends DCommand {
 		final GuildVoiceState memberVoiceState = member.getVoiceState();
 
 		if (!memberVoiceState.inVoiceChannel()) {
-			event.reply("Você tem que estar em uma sala para tocar música!").queue();
+			event.reply("Você tem que estar em uma sala para eu tocar música!").queue();
 			return;
 		}
 
@@ -52,6 +52,6 @@ public class StopCommand extends DCommand {
 		musicManager.scheduler.clearQueue();
 		musicManager.scheduler.getPlayer().stopTrack();
 
-		event.reply("Parando de tocarr música").queue();
+		event.reply("Parando de tocar música").queue();
 	}
 }

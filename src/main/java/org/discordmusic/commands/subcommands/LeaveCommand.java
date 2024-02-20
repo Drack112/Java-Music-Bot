@@ -24,8 +24,8 @@ public class LeaveCommand extends DCommand {
 		final GuildVoiceState state = self.getVoiceState();
 		final SlashCommandEvent event = arguments.getEvent();
 
-		if (state.inVoiceChannel()) {
-			event.reply("Eu já estou na sala!").queue();
+		if (!state.inVoiceChannel()) {
+			event.reply("O bot não está em nenhuma sala!").queue();
 			return;
 		}
 
