@@ -25,7 +25,7 @@ public class PauseCommand extends DCommand {
 		final SlashCommandEvent event = arguments.getEvent();
 
 		if (!voiceState.inVoiceChannel()) {
-			event.reply("Eu já estou na sala!").queue();
+			event.reply("Não consigo tocar música sem estar em uma sala!").queue();
 			return;
 		}
 
@@ -33,12 +33,12 @@ public class PauseCommand extends DCommand {
 		final GuildVoiceState memberVoiceState = member.getVoiceState();
 
 		if (!memberVoiceState.inVoiceChannel()) {
-			event.reply("Você não está conectado na sala!").queue();
+			event.reply("Você não está conectado em nenhuma sala! Use o comando `/join` para eu conseguir entrar na sala!").queue();
 			return;
 		}
 
 		if (!memberVoiceState.getChannel().equals(voiceState.getChannel())) {
-			event.reply("Você não pode parar a música sem estar na mesma sala que o bot!").queue();
+			event.reply("Você não pode parar a música sem estar na mesma sala que eu estou!").queue();
 			return;
 		}
 

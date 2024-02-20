@@ -27,7 +27,7 @@ public class JoinCommand extends DCommand {
 
 
 		if (state.inVoiceChannel()) {
-			event.reply("Eu já estou na sala!").queue();
+			event.reply("Eu já estou no canal de voz!").queue();
 			return;
 		}
 
@@ -35,7 +35,7 @@ public class JoinCommand extends DCommand {
 		final GuildVoiceState memberVoiceState = member.getVoiceState();
 
 		if (!memberVoiceState.inVoiceChannel()) {
-			event.reply("Você não está conectado na sala!").queue();
+			event.reply("Você não está conectado em nenhuma sala! Use o comando `/join` para eu conseguir entrar na sala!").queue();
 			return;
 		}
 
@@ -44,6 +44,6 @@ public class JoinCommand extends DCommand {
 		final VoiceChannel memberChannel = memberVoiceState.getChannel();
 
 		audioManager.openAudioConnection(memberChannel);
-		event.replyFormat("Conectando ao canal de voz %s...", memberChannel.getName()).queue();
+		event.replyFormat("Conectando ao canal de voz %s", memberChannel.getName()).queue();
 	}
 }

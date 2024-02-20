@@ -25,7 +25,7 @@ public class LeaveCommand extends DCommand {
 		final SlashCommandEvent event = arguments.getEvent();
 
 		if (!state.inVoiceChannel()) {
-			event.reply("O bot não está em nenhuma sala!").queue();
+			event.reply("Eu não estou em nenhuma sala!").queue();
 			return;
 		}
 
@@ -38,6 +38,6 @@ public class LeaveCommand extends DCommand {
 		final AudioManager audioManager = arguments.getGuild().getAudioManager();
 		audioManager.closeAudioConnection();
 
-		event.reply("O bot saiu do canal de voz").queue();
+		event.replyFormat("Saindo do canal %d", channel.getName()).queue();
 	}
 }
