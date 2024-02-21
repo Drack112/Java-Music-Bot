@@ -1,5 +1,6 @@
 package org.discordmusic.commands.subcommands;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -10,6 +11,8 @@ import org.discordmusic.commands.CommandArguments;
 import org.discordmusic.commands.DCommand;
 import org.discordmusic.commands.music.GuildMusicManager;
 import org.discordmusic.commands.music.PlayerManager;
+
+import java.awt.*;
 
 public class LeaveCommand extends DCommand {
 	public LeaveCommand() {
@@ -25,7 +28,12 @@ public class LeaveCommand extends DCommand {
 		final SlashCommandEvent event = arguments.getEvent();
 
 		if (!state.inVoiceChannel()) {
-			event.reply("Eu não estou em nenhuma sala!").queue();
+			channel.sendMessageEmbeds(
+				new EmbedBuilder()
+					.setColor(Color.RED)
+					.setFooter(event.getJDA().getSelfUser().getName() + " \uD83D\uDC0D")
+					.setDescription("Eu não estou em nenhuma sala!"
+					).build()).queue();
 			return;
 		}
 
@@ -38,6 +46,11 @@ public class LeaveCommand extends DCommand {
 		final AudioManager audioManager = arguments.getGuild().getAudioManager();
 		audioManager.closeAudioConnection();
 
-		event.replyFormat("Saindo do canal %d", channel.getName()).queue();
+		channel.sendMessageEmbeds(
+			new EmbedBuilder()
+				.setColor(Color.BLUE)
+				.setFooter(event.getJDA().getSelfUser().getName() + " \uD83D\uDC0D")
+				.setDescription("Saindo do canal de voz"
+				).build()).queue();
 	}
 }

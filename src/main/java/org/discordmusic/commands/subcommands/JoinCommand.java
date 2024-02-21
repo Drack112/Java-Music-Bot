@@ -1,6 +1,7 @@
 package org.discordmusic.commands.subcommands;
 
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -9,6 +10,8 @@ import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.managers.AudioManager;
 import org.discordmusic.commands.CommandArguments;
 import org.discordmusic.commands.DCommand;
+
+import java.awt.*;
 
 
 public class JoinCommand extends DCommand {
@@ -27,7 +30,12 @@ public class JoinCommand extends DCommand {
 
 
 		if (state.inVoiceChannel()) {
-			event.reply("Eu já estou no canal de voz!").queue();
+			channel.sendMessageEmbeds(
+				new EmbedBuilder()
+					.setColor(Color.RED)
+					.setFooter(event.getJDA().getSelfUser().getName() + " \uD83D\uDC0D")
+					.setDescription("Eu já estou em um canal de voz"
+					).build()).queue();
 			return;
 		}
 
@@ -35,7 +43,12 @@ public class JoinCommand extends DCommand {
 		final GuildVoiceState memberVoiceState = member.getVoiceState();
 
 		if (!memberVoiceState.inVoiceChannel()) {
-			event.reply("Você não está conectado em nenhuma sala! Use o comando `/join` para eu conseguir entrar na sala!").queue();
+			channel.sendMessageEmbeds(
+				new EmbedBuilder()
+					.setColor(Color.RED)
+					.setFooter(event.getJDA().getSelfUser().getName() + " \uD83D\uDC0D")
+					.setDescription("Você não está conectado em nenhuma sala! Use o comando `/join` para eu conseguir entrar na sala!"
+					).build()).queue();
 			return;
 		}
 
@@ -44,6 +57,11 @@ public class JoinCommand extends DCommand {
 		final VoiceChannel memberChannel = memberVoiceState.getChannel();
 
 		audioManager.openAudioConnection(memberChannel);
-		event.replyFormat("Conectando ao canal de voz %s", memberChannel.getName()).queue();
+		channel.sendMessageEmbeds(
+			new EmbedBuilder()
+				.setColor(Color.GREEN)
+				.setFooter(event.getJDA().getSelfUser().getName() + " \uD83D\uDC0D")
+				.setDescription(String.format("Conectando ao canal de voz %s", memberChannel.getName())
+				).build()).queue();
 	}
 }

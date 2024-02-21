@@ -49,9 +49,11 @@ public class StopCommand extends DCommand {
 			return;
 		}
 
+		event.reply("Parando de tocar música").queue();
+
 		musicManager.scheduler.clearQueue();
 		musicManager.scheduler.getPlayer().stopTrack();
 
-		event.reply("Parando de tocar música").queue();
+
 	}
 }

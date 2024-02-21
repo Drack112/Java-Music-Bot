@@ -1,6 +1,7 @@
 package org.discordmusic.commands.subcommands;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -9,6 +10,8 @@ import org.discordmusic.commands.CommandArguments;
 import org.discordmusic.commands.DCommand;
 import org.discordmusic.commands.music.GuildMusicManager;
 import org.discordmusic.commands.music.PlayerManager;
+
+import java.awt.*;
 
 public class PauseCommand extends DCommand {
 
@@ -25,7 +28,12 @@ public class PauseCommand extends DCommand {
 		final SlashCommandEvent event = arguments.getEvent();
 
 		if (!voiceState.inVoiceChannel()) {
-			event.reply("Não consigo tocar música sem estar em uma sala!").queue();
+			channel.sendMessageEmbeds(
+				new EmbedBuilder()
+					.setColor(Color.RED)
+					.setFooter(event.getJDA().getSelfUser().getName() + " \uD83D\uDC0D")
+					.setDescription("Não consigo tocar música sem estar em uma sala!"
+					).build()).queue();
 			return;
 		}
 
@@ -33,12 +41,22 @@ public class PauseCommand extends DCommand {
 		final GuildVoiceState memberVoiceState = member.getVoiceState();
 
 		if (!memberVoiceState.inVoiceChannel()) {
-			event.reply("Você não está conectado em nenhuma sala! Use o comando `/join` para eu conseguir entrar na sala!").queue();
+			channel.sendMessageEmbeds(
+				new EmbedBuilder()
+					.setColor(Color.RED)
+					.setFooter(event.getJDA().getSelfUser().getName() + " \uD83D\uDC0D")
+					.setDescription("Você não está conectado em nenhuma sala! Use o comando `/join` para eu conseguir entrar na sala!"
+					).build()).queue();
 			return;
 		}
 
 		if (!memberVoiceState.getChannel().equals(voiceState.getChannel())) {
-			event.reply("Você não pode parar a música sem estar na mesma sala que eu estou!").queue();
+			channel.sendMessageEmbeds(
+				new EmbedBuilder()
+					.setColor(Color.RED)
+					.setFooter(event.getJDA().getSelfUser().getName() + " \uD83D\uDC0D")
+					.setDescription("Você não pode parar a música sem estar na mesma sala que eu estou!"
+					).build()).queue();
 			return;
 		}
 
@@ -46,14 +64,24 @@ public class PauseCommand extends DCommand {
 		final AudioPlayer audioPlayer = musicManager.audioPlayer;
 
 		if (audioPlayer.getPlayingTrack() == null) {
-			event.reply("Nenhuma música está sendo tocada!").queue();
+			channel.sendMessageEmbeds(
+				new EmbedBuilder()
+					.setColor(Color.BLUE)
+					.setFooter(event.getJDA().getSelfUser().getName() + " \uD83D\uDC0D")
+					.setDescription("Nenhuma música está sendo tocada!"
+					).build()).queue();
 			return;
 		}
 
 		final boolean paused = musicManager.audioPlayer.isPaused();
 
-		musicManager.audioPlayer.setPaused(!paused);
+		channel.sendMessageEmbeds(
+			new EmbedBuilder()
+				.setColor(Color.GREEN)
+				.setFooter(event.getJDA().getSelfUser().getName() + " \uD83D\uDC0D")
+				.setDescription(paused ? "Continuando a playlist" : "Pausando"
+				).build()).queue();
 
-		event.reply(paused ? "Continuando a playlist" : "Pausando");
+		musicManager.audioPlayer.setPaused(!paused);
 	}
 }
