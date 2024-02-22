@@ -32,7 +32,7 @@ public class Main implements EventListener {
 			.setMemberCachePolicy(MemberCachePolicy.VOICE.or(MemberCachePolicy.OWNER))
 			.setBulkDeleteSplittingEnabled(false)
 			.setCompression(Compression.NONE)
-			.setActivity(Activity.listening("Music"))
+			.setActivity(Activity.playing("It's a Hard Beat on a Hard Drive! \uD83C\uDFA7"))
 			.addEventListeners(new ReadyEvent())
 			.addEventListeners(new CommandHandler())
 			.build();
