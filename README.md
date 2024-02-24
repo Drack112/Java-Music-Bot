@@ -14,6 +14,10 @@
 
 ## 💻 Projeto
 
+![image](https://github.com/Drack112/Java-Music-Bot/assets/61944386/6a0843bd-acd3-4595-9a3d-03785f2fd7f5)
+![image](https://github.com/Drack112/Java-Music-Bot/assets/61944386/574e194a-3167-4fc6-9754-afde2d6ef942)
+
+
 Um bot de música para discord feito com Java, utilizando libs como JDA e LavaPlayer
 
 <a id="-rodando"></a>
